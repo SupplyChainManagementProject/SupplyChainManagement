@@ -5,9 +5,10 @@ pragma solidity ^0.8.9;
 // import "hardhat/console.sol";
 
 import "../common/DataTypes.sol";
+import "../common/Events.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract Supplier is DataTypes {
+contract Supplier is DataTypes, Events {
     address private admin;
 
     mapping(address=>RawMaterialSupplier) private rawMaterialSupplier;
@@ -32,6 +33,8 @@ contract Supplier is DataTypes {
     function createRawMaterialSupplier(address _supplier, string memory _name, string memory _location) public onlyAdmin {
         rawMaterialSupplier[_supplier] = RawMaterialSupplier(_name, _supplier, _location);
         suppliers.push(RawMaterialSupplier(_name, _supplier, _location));
+
+        emit SupplierAdded(_name, _supplier, _location);
     }
 
     function getAllSuppliers() public view returns (RawMaterialSupplier[] memory) {
@@ -62,6 +65,8 @@ contract Supplier is DataTypes {
             _creator,
             _unitPrice
         ));
+
+        emit RawMaterialCreated(materialId, _materialName, _materialSource, _creator, _unitPrice);
     }
 
     function getAllRawMaterials() public view returns (RawMaterial[] memory) {
@@ -75,10 +80,10 @@ contract Supplier is DataTypes {
         address _manufacturer
     ) public {
         string memory prefix = "raw_mat_order";
-        string memory materialId = string(abi.encodePacked(prefix, _orderDateTime));
+        string memory orderId = string(abi.encodePacked(prefix, _orderDateTime));
 
-        rawMaterialOrder[materialId] = RawMaterialOrder(
-            materialId,
+        rawMaterialOrder[orderId] = RawMaterialOrder(
+            orderId,
             _rawMaterials,
             _orderDateTime,
             _totalPrice,
@@ -86,12 +91,14 @@ contract Supplier is DataTypes {
         );
 
         rawMaterialOrders.push(RawMaterialOrder(
-            materialId,
+            orderId,
             _rawMaterials,
             _orderDateTime,
             _totalPrice,
             _manufacturer
         ));
+
+        emit RawMaterialOrderCreated(orderId, _orderDateTime, _totalPrice, _manufacturer);
     }
 
     function getAllRawMaterialOrders() public view returns (RawMaterialOrder[] memory) {

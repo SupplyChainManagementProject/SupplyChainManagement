@@ -5,9 +5,10 @@ pragma solidity ^0.8.9;
 // import "hardhat/console.sol";
 
 import "../common/DataTypes.sol";
+import "../common/Events.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract Manufacturer is DataTypes {
+contract Manufacturor is DataTypes, Events {
     address private admin;
 
     mapping(address=>Manufacturer) private manufacturer;
@@ -32,6 +33,8 @@ contract Manufacturer is DataTypes {
     function createManufacturer(address _manufacturer, string memory _name, string memory _location) public onlyAdmin {
         manufacturer[_manufacturer] = Manufacturer(_name, _manufacturer, _location);
         manufacturers.push(Manufacturer(_name, _manufacturer, _location));
+
+        emit ManufacturerAdded(_name, _manufacturer, _location);
     }
 
     function getAllManufacturers() public view returns (Manufacturer[] memory) {
@@ -62,6 +65,8 @@ contract Manufacturer is DataTypes {
             _manufacturer,
             _unitPrice
         ));
+
+        emit ProductCreated(prodId, _prodName, _manufacturer, _unitPrice);
     }
 
     function getAllManufacturedProds() public view returns (ManufacturedProduct[] memory) {
@@ -92,6 +97,8 @@ contract Manufacturer is DataTypes {
             _distributer,
             _totalPrice
         ));
+
+        emit ProductOrderCreated(orderId, _orderDateTime, _distributer, _totalPrice);
     }
 
     function getAllManufacturedProdOrders() public view returns (ManufacturedProduct[] memory) {
