@@ -41,17 +41,22 @@ contract Supplier is DataTypes, Events {
         return suppliers;
     }
 
+    function getSupplierByPublicAddress(address _supplier) public view returns (RawMaterialSupplier memory) {
+        return rawMaterialSupplier[_supplier];
+    }
+
     function createRawMaterial(
         string memory _materialName,
         string memory _materialSource,
         uint _unitPrice,
-        address _creator
+        address _creator,
+        string memory _materialId
     ) public {
-        string memory prefix = "raw_mat";
-        string memory timestampStr = Strings.toString(block.timestamp);
-        string memory materialId = string(abi.encodePacked(prefix, timestampStr));
-        rawMaterial[materialId] = RawMaterial(
-            materialId,
+        // string memory prefix = "raw_mat";
+        // string memory timestampStr = Strings.toString(block.timestamp);
+        // string memory materialId = string(abi.encodePacked(prefix, timestampStr));
+        rawMaterial[_materialId] = RawMaterial(
+            _materialId,
             _materialName,
             _materialSource,
             _creator,
@@ -59,14 +64,14 @@ contract Supplier is DataTypes, Events {
         );
 
         rawMaterials.push(RawMaterial(
-            materialId,
+            _materialId,
             _materialName,
             _materialSource,
             _creator,
             _unitPrice
         ));
 
-        emit RawMaterialCreated(materialId, _materialName, _materialSource, _creator, _unitPrice);
+        emit RawMaterialCreated(_materialId, _materialName, _materialSource, _creator, _unitPrice);
     }
 
     function getAllRawMaterials() public view returns (RawMaterial[] memory) {
@@ -77,13 +82,14 @@ contract Supplier is DataTypes, Events {
         string[] memory _rawMaterials,
         string memory _orderDateTime,
         uint _totalPrice,
-        address _manufacturer
+        address _manufacturer,
+        string memory _orderId
     ) public {
-        string memory prefix = "raw_mat_order";
-        string memory orderId = string(abi.encodePacked(prefix, _orderDateTime));
+        // string memory prefix = "raw_mat_order";
+        // string memory orderId = string(abi.encodePacked(prefix, _orderDateTime));
 
-        rawMaterialOrder[orderId] = RawMaterialOrder(
-            orderId,
+        rawMaterialOrder[_orderId] = RawMaterialOrder(
+            _orderId,
             _rawMaterials,
             _orderDateTime,
             _totalPrice,
@@ -91,14 +97,14 @@ contract Supplier is DataTypes, Events {
         );
 
         rawMaterialOrders.push(RawMaterialOrder(
-            orderId,
+            _orderId,
             _rawMaterials,
             _orderDateTime,
             _totalPrice,
             _manufacturer
         ));
 
-        emit RawMaterialOrderCreated(orderId, _orderDateTime, _totalPrice, _manufacturer);
+        emit RawMaterialOrderCreated(_orderId, _orderDateTime, _totalPrice, _manufacturer);
     }
 
     function getAllRawMaterialOrders() public view returns (RawMaterialOrder[] memory) {

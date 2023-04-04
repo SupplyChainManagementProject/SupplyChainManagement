@@ -26,13 +26,18 @@ contract MainContract is DataTypes {
         return supplier.getAllSuppliers();
     }
 
+    function getSupplierByPublicAddress(address _supplier) public view returns (RawMaterialSupplier memory) {
+        return supplier.getSupplierByPublicAddress(_supplier);
+    }
+
     function createRawMaterial(
         string memory _materialName,
         string memory _materialSource,
         uint _unitPrice,
-        address _creator
+        address _creator,
+        string memory _materialId
     ) public {
-        supplier.createRawMaterial(_materialName, _materialSource, _unitPrice, _creator);
+        supplier.createRawMaterial(_materialName, _materialSource, _unitPrice, _creator, _materialId);
     }
 
     function getAllRawMaterials() public view returns (RawMaterial[] memory) {
@@ -43,9 +48,10 @@ contract MainContract is DataTypes {
         string[] memory _rawMaterials,
         string memory _orderDateTime,
         uint _totalPrice,
-        address _manufacturer
+        address _manufacturer,
+        string memory _orderId
     ) public {
-        supplier.createRawMaterialOrder(_rawMaterials, _orderDateTime, _totalPrice, _manufacturer);
+        supplier.createRawMaterialOrder(_rawMaterials, _orderDateTime, _totalPrice, _manufacturer, _orderId);
     }
 
     function getAllRawMaterialOrders() public view returns (RawMaterialOrder[] memory) {
