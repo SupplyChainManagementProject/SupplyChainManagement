@@ -46,12 +46,14 @@ contract MainContract is DataTypes {
 
     function createRawMaterialOrder(
         string[] memory _rawMaterials,
+        uint[] memory _quantities,
         string memory _orderDateTime,
         uint _totalPrice,
         address _manufacturer,
+        address _supplier,
         string memory _orderId
     ) public {
-        supplier.createRawMaterialOrder(_rawMaterials, _orderDateTime, _totalPrice, _manufacturer, _orderId);
+        supplier.createRawMaterialOrder(_rawMaterials, _quantities, _orderDateTime, _totalPrice, _manufacturer, _supplier, _orderId);
     }
 
     function getAllRawMaterialOrders() public view returns (RawMaterialOrder[] memory) {
@@ -67,30 +69,46 @@ contract MainContract is DataTypes {
         return manufacturer.getAllManufacturers();
     }
 
+    function getManufacturerByPublicAddress(address _manufacturer) public view returns(Manufacturer memory) {
+        return manufacturer.getManufacturerByPublicAddress(_manufacturer);
+    } 
+
     function createManufacturedProd(
         string memory _prodName,
         string[] memory _rawMaterialConsts,
         address _manufacturer,
-        uint _unitPrice
+        uint _unitPrice,
+        string memory _prodId
     ) public {
-        manufacturer.createManufacturedProd(_prodName, _rawMaterialConsts, _manufacturer, _unitPrice);
+        manufacturer.createManufacturedProd(_prodName, _rawMaterialConsts, _manufacturer, _unitPrice, _prodId);
     }
 
     function getAllManufacturedProds() public view returns (ManufacturedProduct[] memory) {
         return manufacturer.getAllManufacturedProdOrders();
     }
 
+    function getManufacturedProductById(string memory _prodId) public view returns (ManufacturedProduct memory) {
+        return manufacturer.getManufacturedProductById(_prodId);
+    }
+
     function createManufacturedProdOrder(
         string[] memory _manufacturedProds,
+        uint[] memory _quantity,
         string memory _orderDateTime,
         uint _totalPrice,
-        address _distributer
+        address _distributer,
+        address _manufacturer,
+        string memory _orderId
     ) public {
-        manufacturer.createManufacturedProdOrder(_manufacturedProds, _orderDateTime, _totalPrice, _distributer);
+        manufacturer.createManufacturedProdOrder(_manufacturedProds, _quantity, _orderDateTime, _totalPrice, _distributer, _manufacturer, _orderId);
     }
 
     function getAllManufacturedProdOrders() public view returns (ManufacturedProduct[] memory) {
         return manufacturer.getAllManufacturedProdOrders();
+    }
+
+    function getManufacturedProdOrderById(string memory _orderId) public view returns (ManufacturedProductOrder memory) {
+        return manufacturer.getManufacturedProdOrderById(_orderId);
     }
 
     // Admin-Only
@@ -100,5 +118,9 @@ contract MainContract is DataTypes {
 
     function getAllDistributers() public view returns (Distributer[] memory) {
         return distributor.getAllDistributers();
+    }
+
+    function getDistributerByPublicAddress(address _distributer) public view returns (Distributer memory) {
+        return distributor.getDistributerByPublicAddress(_distributer);
     }
 }

@@ -78,11 +78,17 @@ contract Supplier is DataTypes, Events {
         return rawMaterials;
     }
 
+    function getRawMaterialById(string memory _materialId) public view returns (RawMaterial memory) {
+        return rawMaterial[_materialId];
+    }
+
     function createRawMaterialOrder(
         string[] memory _rawMaterials,
+        uint[] memory _quantities,
         string memory _orderDateTime,
         uint _totalPrice,
         address _manufacturer,
+        address _supplier,
         string memory _orderId
     ) public {
         // string memory prefix = "raw_mat_order";
@@ -91,23 +97,31 @@ contract Supplier is DataTypes, Events {
         rawMaterialOrder[_orderId] = RawMaterialOrder(
             _orderId,
             _rawMaterials,
+            _quantities,
             _orderDateTime,
             _totalPrice,
-            _manufacturer
+            _manufacturer,
+            _supplier
         );
 
         rawMaterialOrders.push(RawMaterialOrder(
             _orderId,
             _rawMaterials,
+            _quantities,
             _orderDateTime,
             _totalPrice,
-            _manufacturer
+            _manufacturer,
+            _supplier
         ));
 
-        emit RawMaterialOrderCreated(_orderId, _orderDateTime, _totalPrice, _manufacturer);
+        emit RawMaterialOrderCreated(_orderId, _orderDateTime, _totalPrice, _manufacturer, _supplier);
     }
 
     function getAllRawMaterialOrders() public view returns (RawMaterialOrder[] memory) {
         return rawMaterialOrders;
+    }
+
+    function getRawMaterialOrderById(string memory _orderId) public view returns (RawMaterialOrder memory) {
+        return rawMaterialOrder[_orderId];
     }
 }

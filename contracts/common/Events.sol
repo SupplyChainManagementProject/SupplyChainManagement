@@ -17,7 +17,8 @@ contract Events {
         string orderId,
         string orderDateTime,
         uint totalPrice,
-        address manufacturer
+        address manufacturer,
+        address supplier
     );
 
     event ProductCreated(
@@ -30,6 +31,7 @@ contract Events {
         string orderId,
         string orderDateTime,
         address _distributer,
+        address _manufacturer,
         uint totalPrice
     );
 }

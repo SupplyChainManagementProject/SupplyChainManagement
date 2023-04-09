@@ -33,4 +33,8 @@ contract Distributor is DataTypes, Events {
     function getAllDistributers() public view returns (Distributer[] memory) {
         return distributers;
     }
+
+    function getDistributerByPublicAddress(address _distributer) public view returns (Distributer memory) {
+        return distributer[_distributer];
+    }
 }

@@ -31,9 +31,11 @@ contract DataTypes {
     struct RawMaterialOrder {
         string orderId;
         string[] rawMaterials; // list of materialId
+        uint[] quantities;
         string orderDateTime;
         uint totalPrice;
         address manufacturer;
+        address supplier;
     }
 
     struct ManufacturedProduct {
@@ -47,8 +49,10 @@ contract DataTypes {
     struct ManufacturedProductOrder {
         string orderId;
         string[] manufacturedProducts; // list of prodId's of manufactured products
+        uint[] quantities;
         string orderDateTime;
         address _distributer;
+        address _manufacturer;
         uint totalPrice;
     }
 }
