@@ -44,6 +44,10 @@ contract MainContract is DataTypes {
         return supplier.getAllRawMaterials();
     }
 
+    function getRawMaterialById(string memory _materialId) public view returns (RawMaterial memory) {
+        return supplier.getRawMaterialById(_materialId);
+    }
+
     function createRawMaterialOrder(
         string[] memory _rawMaterials,
         uint[] memory _quantities,
@@ -58,6 +62,10 @@ contract MainContract is DataTypes {
 
     function getAllRawMaterialOrders() public view returns (RawMaterialOrder[] memory) {
         return supplier.getAllRawMaterialOrders();
+    }
+
+    function getRawMaterialOrderById(string memory _orderId) public view returns (RawMaterialOrder memory) {
+        return supplier.getRawMaterialOrderById(_orderId);
     }
 
     // Admin-Only
